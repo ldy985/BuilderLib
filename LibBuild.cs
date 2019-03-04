@@ -89,6 +89,7 @@ class LibBuild : NukeBuild
                .SetOutputDirectory(ArtifactsDirectory)
                .EnableIncludeSymbols()
                .EnableIncludeSource()
+               .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                .EnableNoBuild()
                .EnableNoRestore());
         });
