@@ -60,12 +60,17 @@ class LibBuild : NukeBuild
         .Before(Test)
         .Executes(() =>
         {
+
+            string suffix = Equals(Configuration, Configuration.Release) ? string.Empty : "-alpha";
+            string nugetVersion = GitVersion.AssemblySemVer + suffix;
+            string informationalVersion = $"{nugetVersion}+branch:{GitVersion.BranchName}+sha:{GitVersion.Sha}";
+            Logger.Normal("Version: " + nugetVersion);
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(GitVersion.InformationalVersion)
+                .SetInformationalVersion(informationalVersion)
                 .EnableNoRestore());
         });
 
@@ -101,7 +106,7 @@ class LibBuild : NukeBuild
          .Requires(() => Configuration.ToString().EqualsOrdinalIgnoreCase("Release"))
          .Executes(() =>
          {
-             GlobFiles(ArtifactsDirectory, "*.nupkg").NotEmpty()
+             GlobFiles(ArtifactsDirectory, "*nupkg").NotEmpty()
                 .ForEach(x =>
                 {
                     DotNetNuGetPush(s => s
