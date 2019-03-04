@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -29,11 +30,14 @@ class LibBuild : NukeBuild
 
     public static int Main() => Execute<LibBuild>(x => x.Build);
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-
     [Parameter] string MyGetSource;
     [Parameter] string MyGetApiKey;
+
+
+    [Parameter]
+    public bool ForProd { get; set; }
+
+    public string Configuration => ForProd ? "Release" : "Debug";
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
@@ -61,7 +65,7 @@ class LibBuild : NukeBuild
         .Executes(() =>
         {
 
-            string suffix = Equals(Configuration, Configuration.Release) ? string.Empty : "-alpha";
+            string suffix = ForProd ? string.Empty : "-alpha";
             string nugetVersion = GitVersion.AssemblySemVer + suffix;
             string informationalVersion = $"{nugetVersion}+branch:{GitVersion.BranchName}+sha:{GitVersion.Sha}";
             Logger.Normal("Version: " + nugetVersion);
@@ -103,7 +107,7 @@ class LibBuild : NukeBuild
          .DependsOn(Pack)
          .Requires(() => MyGetSource)
          .Requires(() => MyGetApiKey)
-         .Requires(() => Configuration.ToString().EqualsOrdinalIgnoreCase("Release"))
+         .Requires(() => Configuration.EqualsOrdinalIgnoreCase("Release"))
          .Executes(() =>
          {
              GlobFiles(ArtifactsDirectory, "*nupkg").NotEmpty()
