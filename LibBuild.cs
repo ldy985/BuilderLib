@@ -107,7 +107,6 @@ class LibBuild : NukeBuild
          .DependsOn(Pack)
          .Requires(() => MyGetSource)
          .Requires(() => MyGetApiKey)
-         .Requires(() => Configuration.EqualsOrdinalIgnoreCase("Release"))
          .Executes(() =>
          {
              GlobFiles(ArtifactsDirectory, "*nupkg").NotEmpty()
