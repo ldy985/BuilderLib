@@ -72,6 +72,7 @@ class LibBuild : NukeBuild
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion)
+                .SetVersion(GitVersion.FullSemVer)
                 .EnableNoRestore());
         });
 
@@ -95,6 +96,10 @@ class LibBuild : NukeBuild
                .SetOutputDirectory(ArtifactsDirectory)
                .EnableIncludeSymbols()
                .EnableIncludeSource()
+               .SetAssemblyVersion(GitVersion.AssemblySemVer)
+               .SetFileVersion(GitVersion.AssemblySemVer)
+               .SetInformationalVersion(GitVersion.InformationalVersion)
+               .SetVersion(GitVersion.FullSemVer)
                .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                .EnableNoBuild()
                .EnableNoRestore());
