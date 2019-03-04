@@ -65,16 +65,13 @@ class LibBuild : NukeBuild
         .Executes(() =>
         {
 
-            string suffix = ForProd ? string.Empty : "-alpha";
-            string nugetVersion = GitVersion.AssemblySemVer + suffix;
-            string informationalVersion = $"{nugetVersion}+branch:{GitVersion.BranchName}+sha:{GitVersion.Sha}";
-            Logger.Normal("Version: " + nugetVersion);
+            Logger.Normal("Version: " + GitVersion.FullSemVer);
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(informationalVersion)
+                .SetFileVersion(GitVersion.AssemblySemVer)
+                .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
 
