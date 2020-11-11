@@ -1,4 +1,4 @@
-image: registry.gitlab.com/ldy985/dotnetsdk_gitversion:dotnet
+image: mcr.microsoft.com/dotnet/sdk:5.0
 
 cache:
   key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME"
