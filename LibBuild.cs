@@ -93,7 +93,6 @@ class LibBuild : NukeBuild
                              }
 
                              GlobFiles(ArtifactsDirectory, "*.nupkg").NotEmpty().ForEach(Push);
-                             GlobFiles(ArtifactsDirectory, "*.snupkg").NotEmpty().ForEach(Push);
                          });
 
     public static int Main()
