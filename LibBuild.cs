@@ -18,7 +18,7 @@ class LibBuild : NukeBuild
     readonly GitRepository GitRepository;
 
     [GitVersion]
-    readonly GitVersion GitVersion;
+    readonly Nuke.Common.Tools.GitVersion.GitVersion GitVersion;
 
     [Solution]
     readonly Solution Solution;
