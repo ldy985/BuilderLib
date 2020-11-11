@@ -4,6 +4,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+
 //using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -47,6 +48,7 @@ class LibBuild : NukeBuild
                               //Logger.Normal("Version: " + GitVersion.FullSemVer);
                               DotNetBuild(s => s.SetProjectFile(Solution)
                                                 .SetConfiguration(Configuration)
+
                                                 //.SetAssemblyVersion(GitVersion.AssemblySemVer)
                                                 //.SetFileVersion(GitVersion.AssemblySemVer)
                                                 //.SetInformationalVersion(GitVersion.InformationalVersion)
@@ -65,10 +67,12 @@ class LibBuild : NukeBuild
 
     Target Pack => _ => _.Executes(() =>
     {
-        DotNetPack(s => s.SetConfiguration(Configuration)
+        DotNetPack(s => s.SetProject(Solution)
+                         .SetConfiguration(Configuration)
                          .SetOutputDirectory(ArtifactsDirectory)
                          .EnableIncludeSymbols()
                          .EnableIncludeSource()
+
                          //.SetAssemblyVersion(GitVersion.AssemblySemVer)
                          //.SetFileVersion(GitVersion.AssemblySemVer)
                          //.SetInformationalVersion(GitVersion.InformationalVersion)
