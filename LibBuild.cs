@@ -24,10 +24,10 @@ class LibBuild : NukeBuild
     readonly Solution Solution;
 
     [Parameter]
-    string MyGetApiKey;
+    string ApiKey;
 
     [Parameter]
-    string MyGetSource;
+    string Path;
 
     [Parameter]
     public bool ForProd { get; set; }
@@ -79,13 +79,13 @@ class LibBuild : NukeBuild
     });
 
     Target Push => _ => _.DependsOn(Pack)
-                         .Requires(() => MyGetSource)
-                         .Requires(() => MyGetApiKey)
+                         .Requires(() => Path)
+                         .Requires(() => ApiKey)
                          .Executes(() =>
                          {
                              void Push(string x)
                              {
-                                 DotNetNuGetPush(s => s.SetTargetPath(x).SetSource(MyGetSource).SetApiKey(MyGetApiKey));
+                                 DotNetNuGetPush(s => s.SetTargetPath(x).SetSource(Path).SetApiKey(ApiKey));
                              }
 
                              GlobFiles(ArtifactsDirectory, "*.nupkg").NotEmpty().ForEach(Push);
