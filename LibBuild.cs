@@ -4,8 +4,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
-
-//using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -18,8 +17,8 @@ class LibBuild : NukeBuild
     [GitRepository]
     readonly GitRepository GitRepository;
 
-    //[GitVersion]
-    //readonly GitVersion GitVersion;
+    [GitVersion]
+    readonly GitVersion GitVersion;
 
     [Solution]
     readonly Solution Solution;
@@ -48,11 +47,10 @@ class LibBuild : NukeBuild
                               //Logger.Normal("Version: " + GitVersion.FullSemVer);
                               DotNetBuild(s => s.SetProjectFile(Solution)
                                                 .SetConfiguration(Configuration)
-
-                                                //.SetAssemblyVersion(GitVersion.AssemblySemVer)
-                                                //.SetFileVersion(GitVersion.AssemblySemVer)
-                                                //.SetInformationalVersion(GitVersion.InformationalVersion)
-                                                //.SetVersion(GitVersion.FullSemVer)
+                                                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                                                .SetFileVersion(GitVersion.AssemblySemVer)
+                                                .SetInformationalVersion(GitVersion.InformationalVersion)
+                                                .SetVersion(GitVersion.FullSemVer)
                                                 .EnableNoRestore());
                           });
 
@@ -72,11 +70,10 @@ class LibBuild : NukeBuild
                          .SetOutputDirectory(ArtifactsDirectory)
                          .EnableIncludeSymbols()
                          .EnableIncludeSource()
-
-                         //.SetAssemblyVersion(GitVersion.AssemblySemVer)
-                         //.SetFileVersion(GitVersion.AssemblySemVer)
-                         //.SetInformationalVersion(GitVersion.InformationalVersion)
-                         //.SetVersion(GitVersion.FullSemVer)
+                         .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                         .SetFileVersion(GitVersion.AssemblySemVer)
+                         .SetInformationalVersion(GitVersion.InformationalVersion)
+                         .SetVersion(GitVersion.FullSemVer)
                          .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                          .EnableNoBuild()
                          .EnableNoRestore());
